@@ -21,7 +21,7 @@ jobs:
         rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete --exclude='.git*' ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/root/node-github-actions
     - name: SSH into server and run Docker Compose
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} 'cd /root/node-github-actions && docker-compose down && docker-compose up --build -d'
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} 'cd /root/node-github-actions && docker compose down && docker compose up --build -d'
       
     # - name: Install SSH
     #   run: sudo apt-get install openssh-client
