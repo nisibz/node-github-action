@@ -18,7 +18,7 @@ jobs:
 
     - name: Rsync files
       run: |
-        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete --exclude='.git*' ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/node-github-actions
+        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete --exclude='.git*' ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/root/node-github-actions
     # - name: Install SSH
     #   run: sudo apt-get install openssh-client
     # - name: Deploy code
