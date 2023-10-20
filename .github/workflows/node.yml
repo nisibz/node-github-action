@@ -14,7 +14,7 @@ jobs:
     - name: Install SSH
       run: sudo apt-get install openssh-client
     - name: Deploy code
-      run: rsync -r --delete-after ${{ github.workspace }}/ user@server:/node-github-actions
+      run: rsync -r --delete-after ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/node-github-actions
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: SSH into server and run Docker Compose
