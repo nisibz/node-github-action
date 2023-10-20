@@ -11,12 +11,20 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install SSH
-      run: sudo apt-get install openssh-client
-    - name: Deploy code
-      run: rsync -r --delete-after -e "ssh -i ${{ secrets.SSH_PRIVATE_KEY }}" ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/node-github-actions
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Set up SSH connection
+      uses: webfactory/ssh-agent@v0.5.2
+      with:
+        ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+    - name: Rsync files
+      run: |
+        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete --exclude='.git*' ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/node-github-actions
+    # - name: Install SSH
+    #   run: sudo apt-get install openssh-client
+    # - name: Deploy code
+    #   run: rsync -r --delete-after -e "ssh -i ${{ secrets.SSH_PRIVATE_KEY }}" ${{ github.workspace }}/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/node-github-actions
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: SSH into server and run Docker Compose
       uses: appleboy/ssh-action@master
       with:
